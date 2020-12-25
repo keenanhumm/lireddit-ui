@@ -94,6 +94,11 @@ export type UserCredentials = {
   password: Scalars["String"];
 };
 
+export type BaseUserFragment = (
+  { __typename?: "User" }
+  & Pick<User, "id" | "username">
+);
+
 export type LoginUserMutationVariables = Exact<{
   username: Scalars["String"];
   password: Scalars["String"];
@@ -111,7 +116,7 @@ export type LoginUserMutation = (
           & Pick<FieldError, "field" | "message">
         )[]>, user?: Maybe<(
           { __typename?: "User" }
-          & Pick<User, "id" | "username">
+          & BaseUserFragment
         )>,
       }
     ),
@@ -135,14 +140,32 @@ export type RegisterMutation = (
           & Pick<FieldError, "field" | "message">
         )[]>, user?: Maybe<(
           { __typename?: "User" }
-          & Pick<User, "id" | "username">
+          & BaseUserFragment
         )>,
       }
     ),
   }
 );
 
+export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
+
+export type MeQuery = (
+  { __typename?: "Query" }
+  & {
+    me?: Maybe<(
+      { __typename?: "User" }
+      & BaseUserFragment
+    )>,
+  }
+);
+
+export const BaseUserFragmentDoc = gql`
+    fragment BaseUser on User {
+  id
+  username
+}
+    `;
 export const LoginUserDocument = gql`
     mutation LoginUser($username: String!, $password: String!) {
   login(credentials: {username: $username, password: $password}) {
@@ -151,12 +174,11 @@ export const LoginUserDocument = gql`
       message
     }
     user {
-      id
-      username
+      ...BaseUser
     }
   }
 }
-    `;
+    ${BaseUserFragmentDoc}`;
 
 export function useLoginUserMutation() {
   return Urql.useMutation<LoginUserMutation, LoginUserMutationVariables>(LoginUserDocument);
@@ -169,13 +191,23 @@ export const RegisterDocument = gql`
       message
     }
     user {
-      id
-      username
+      ...BaseUser
     }
   }
 }
-    `;
+    ${BaseUserFragmentDoc}`;
 
 export function useRegisterMutation() {
   return Urql.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument);
+}
+export const MeDocument = gql`
+    query Me {
+  me {
+    ...BaseUser
+  }
+}
+    ${BaseUserFragmentDoc}`;
+
+export function useMeQuery(options: Omit<Urql.UseQueryArgs<MeQueryVariables>, "query"> = {}) {
+  return Urql.useQuery<MeQuery>({ query: MeDocument, ...options });
 }
