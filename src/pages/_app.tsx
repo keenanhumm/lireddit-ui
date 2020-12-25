@@ -1,14 +1,14 @@
-import { ChakraProvider, ColorModeProvider } from '@chakra-ui/react';
-import { Provider as UrqlProvider, createClient } from 'urql';
+import { ChakraProvider, ColorModeProvider } from "@chakra-ui/react";
+import { Provider as UrqlProvider, createClient } from "urql";
 
-import theme from '../theme';
+import theme from "../theme";
 
 function MyApp({ Component, pageProps }: any) {
   // create urql client
   const client = createClient({
-    url: 'http://localhost:4000/graphql',
+    url: "http://localhost:4000/graphql",
     fetchOptions: {
-      credentials: 'include',
+      credentials: "include",
     },
   });
 
