@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Link, Text } from "@chakra-ui/react";
+import { Avatar, Box, Button, Flex, Link, Text } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
 import React, { ReactElement, useEffect } from "react";
@@ -11,6 +11,7 @@ function NavBar({ }): ReactElement {
   const { me: currentUser } = data || {};
 
   useEffect(() => {
+    // route to login if not logged in
     if (!currentUser) router.push("/login");
   }, [currentUser]);
 
@@ -38,13 +39,18 @@ function NavBar({ }): ReactElement {
                 Register
               </Link>
             </NextLink>
-          </Flex> : <Flex>
+          </Flex> : <Flex alignItems="center">
               <Text
                 color="white"
                 marginRight={2}
               >
                 {currentUser.username}
               </Text>
+              <Avatar
+                marginRight={2}
+                size="sm"
+                name={currentUser.username}
+              />
               <Button
                 isLoading={isLoggingOut}
                 color="white"

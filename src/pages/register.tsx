@@ -1,15 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Formik, Form } from "formik";
 import { Button, Heading } from "@chakra-ui/react";
 import Wrapper from "../components/Wrapper";
 import InputField from "../components/InputField";
-import { useRegisterMutation } from "../generated/graphql";
+import { useMeQuery, useRegisterMutation } from "../generated/graphql";
 import toErrorMap from "../utils/toErrorMap";
 import { useRouter } from "next/router";
 
 const Register = () => {
   const [{ }, registerUser] = useRegisterMutation();
   const router = useRouter();
+  const [{ data }] = useMeQuery();
+  const { me } = data || {};
+
+  useEffect(() => {
+    if (me) { router.push("/"); }
+  }, [me]);
 
   return (
     <Wrapper size="sm">
