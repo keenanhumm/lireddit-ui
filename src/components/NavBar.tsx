@@ -1,11 +1,18 @@
 import { Box, Button, Flex, Link, Text } from "@chakra-ui/react";
 import NextLink from "next/link";
-import React, { ReactElement } from "react";
-import { useMeQuery } from "../generated/graphql";
+import { useRouter } from "next/router";
+import React, { ReactElement, useEffect } from "react";
+import { useLogoutMutation, useMeQuery } from "../generated/graphql";
 
 function NavBar({ }): ReactElement {
+  const router = useRouter();
   const [{ data }] = useMeQuery();
+  const [{ fetching: isLoggingOut }, logout] = useLogoutMutation();
   const { me: currentUser } = data || {};
+
+  useEffect(() => {
+    if (!currentUser) router.push("/login");
+  }, [currentUser]);
 
   return (
     <Flex
@@ -39,15 +46,17 @@ function NavBar({ }): ReactElement {
                 {currentUser.username}
               </Text>
               <Button
+                isLoading={isLoggingOut}
                 color="white"
                 variant="link"
+                onClick={() => { logout().then(() => router.push("/login")); }}
               >
                 Log out
               </Button>
             </Flex>
         }
       </Box>
-    </Flex>
+    </Flex >
   );
 }
 
