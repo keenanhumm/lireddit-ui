@@ -1,0 +1,8 @@
+query Performance($areaId: Float!, $day: String) {
+  performance(areaId: $areaId, day: $day) {
+    id
+    day
+    areaId
+    rating
+  }
+}

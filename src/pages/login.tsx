@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Formik, Form } from "formik";
-import { Button, Heading } from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react";
 import Wrapper from "../components/Wrapper";
 import InputField from "../components/InputField";
 import { useLoginUserMutation, useMeQuery } from "../generated/graphql";
@@ -14,12 +14,11 @@ const Login = () => {
   const { me } = data || {};
 
   useEffect(() => {
-    if (me) { router.push("/"); }
+    if (me) { router.push("/areas"); }
   }, [me]);
 
   return (
     <Wrapper size="sm">
-      <Heading>Log in</Heading>
       <Formik
         initialValues={{
           username: "",
@@ -30,7 +29,7 @@ const Login = () => {
           if (response.data?.login.errors) {
             setErrors(toErrorMap(response.data.login.errors));
           } else if (response.data?.login.user) {
-            router.push("/");
+            router.push("/areas");
           }
         }}
       >
@@ -51,11 +50,12 @@ const Login = () => {
               isLoading={!!isSubmitting}
               marginTop={5}
               type="submit"
-              colorScheme="teal"
+              background="cyan.700"
+              color="white"
               aria-label="Register"
               size="lg"
             >
-              log in
+              Log in
             </Button>
           </Form>
         )}

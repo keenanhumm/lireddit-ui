@@ -1,0 +1,7 @@
+mutation CreateUserArea($name: String!) {
+  createUserArea(name: $name) {
+    id
+    name
+    isActive
+  }
+}

@@ -1,0 +1,3 @@
+mutation DeleteUserArea($id: Float!) {
+  deleteUserArea(id: $id)
+}

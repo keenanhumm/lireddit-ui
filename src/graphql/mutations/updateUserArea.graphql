@@ -1,0 +1,7 @@
+mutation updateUserArea($id: Float!, $name: String, $isActive: Boolean) {
+  updateUserArea(id: $id, name: $name, isActive: $isActive) {
+    id
+    name
+    isActive
+  }
+}

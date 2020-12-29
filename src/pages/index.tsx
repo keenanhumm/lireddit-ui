@@ -1,15 +1,15 @@
-import { Heading, Text } from "@chakra-ui/react";
+import { Box, Heading, Text } from "@chakra-ui/react";
+import React from "react";
 import Wrapper from "../components/Wrapper";
-import { useMeQuery } from "../generated/graphql";
 
 const Index = () => {
-  const [{ data = {} }] = useMeQuery();
-  const { username } = data.me || {};
 
   return (
     <Wrapper size="sm">
-      <Heading>Home</Heading>
-      <Text>Welcome to the site, <strong>{username}</strong>!</Text>
+      <Box marginY={5}>
+        <Heading size="2xl">Kaudan</Heading>
+        <Text marginTop={3}>Welcome to the site!</Text>
+      </Box>
     </Wrapper>
   );
 };

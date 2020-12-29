@@ -19,7 +19,6 @@ const Register = () => {
 
   return (
     <Wrapper size="sm">
-      <Heading>Register</Heading>
       <Formik
         initialValues={{
           username: "",
@@ -51,11 +50,12 @@ const Register = () => {
               isLoading={!!isSubmitting}
               marginTop={5}
               type="submit"
-              colorScheme="teal"
+              color="white"
+              background="cyan.700"
               aria-label="Register"
               size="lg"
             >
-              register
+              Register
             </Button>
           </Form>
         )}

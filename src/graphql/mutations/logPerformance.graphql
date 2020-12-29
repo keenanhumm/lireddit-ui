@@ -1,0 +1,8 @@
+mutation LogPerformance($areaId: Float!, $rating: Float!) {
+  logPerformance(areaId: $areaId, rating: $rating) {
+    id
+    areaId
+    rating
+    day
+  }
+}

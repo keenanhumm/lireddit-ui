@@ -1,0 +1,8 @@
+query Performances($day: String) {
+  performances(day: $day) {
+    id
+    day
+    areaId
+    rating
+  }
+}

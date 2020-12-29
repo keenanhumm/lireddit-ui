@@ -16,22 +16,27 @@ export type Scalars = {
 
 export type Query = {
   __typename?: "Query";
-  posts: Post[];
-  post?: Maybe<Post>;
   me?: Maybe<User>;
+  areas: UserArea[];
+  area?: Maybe<UserArea>;
+  performances?: Maybe<Performance[]>;
+  performance?: Maybe<Performance>;
 };
 
 
-export type QueryPostArgs = {
-  id: Scalars["Int"];
-};
-
-export type Post = {
-  __typename?: "Post";
+export type QueryAreaArgs = {
   id: Scalars["Float"];
-  createdAt: Scalars["String"];
-  updatedAt: Scalars["String"];
-  title: Scalars["String"];
+};
+
+
+export type QueryPerformancesArgs = {
+  day?: Maybe<Scalars["String"]>;
+};
+
+
+export type QueryPerformanceArgs = {
+  areaId: Scalars["Float"];
+  day?: Maybe<Scalars["String"]>;
 };
 
 export type User = {
@@ -42,30 +47,34 @@ export type User = {
   username: Scalars["String"];
 };
 
+export type UserArea = {
+  __typename?: "UserArea";
+  id: Scalars["Float"];
+  userId: Scalars["Float"];
+  name: Scalars["String"];
+  isActive: Scalars["Boolean"];
+};
+
+export type Performance = {
+  __typename?: "Performance";
+  id: Scalars["Float"];
+  areaId: Scalars["Float"];
+  userId: Scalars["Float"];
+  rating: Scalars["Float"];
+  day: Scalars["String"];
+  createdAt: Scalars["String"];
+  updatedAt: Scalars["String"];
+};
+
 export type Mutation = {
   __typename?: "Mutation";
-  createPost: Post;
-  updatePost?: Maybe<Post>;
-  deletePost: Scalars["Boolean"];
   register: UserResponse;
   login: UserResponse;
   logout: Scalars["Boolean"];
-};
-
-
-export type MutationCreatePostArgs = {
-  title: Scalars["String"];
-};
-
-
-export type MutationUpdatePostArgs = {
-  title?: Maybe<Scalars["String"]>;
-  id: Scalars["Float"];
-};
-
-
-export type MutationDeletePostArgs = {
-  id: Scalars["Float"];
+  createUserArea: UserArea;
+  updateUserArea?: Maybe<UserArea>;
+  deleteUserArea: Scalars["Boolean"];
+  logPerformance: Performance;
 };
 
 
@@ -76,6 +85,29 @@ export type MutationRegisterArgs = {
 
 export type MutationLoginArgs = {
   credentials: UserCredentials;
+};
+
+
+export type MutationCreateUserAreaArgs = {
+  name: Scalars["String"];
+};
+
+
+export type MutationUpdateUserAreaArgs = {
+  isActive?: Maybe<Scalars["Boolean"]>;
+  name?: Maybe<Scalars["String"]>;
+  id: Scalars["Float"];
+};
+
+
+export type MutationDeleteUserAreaArgs = {
+  id: Scalars["Float"];
+};
+
+
+export type MutationLogPerformanceArgs = {
+  rating: Scalars["Float"];
+  areaId: Scalars["Float"];
 };
 
 export type UserResponse = {
@@ -98,6 +130,47 @@ export type UserCredentials = {
 export type BaseUserFragment = (
   { __typename?: "User" }
   & Pick<User, "id" | "username">
+);
+
+export type CreateUserAreaMutationVariables = Exact<{
+  name: Scalars["String"];
+}>;
+
+
+export type CreateUserAreaMutation = (
+  { __typename?: "Mutation" }
+  & {
+    createUserArea: (
+      { __typename?: "UserArea" }
+      & Pick<UserArea, "id" | "name" | "isActive">
+    ),
+  }
+);
+
+export type DeleteUserAreaMutationVariables = Exact<{
+  id: Scalars["Float"];
+}>;
+
+
+export type DeleteUserAreaMutation = (
+  { __typename?: "Mutation" }
+  & Pick<Mutation, "deleteUserArea">
+);
+
+export type LogPerformanceMutationVariables = Exact<{
+  areaId: Scalars["Float"];
+  rating: Scalars["Float"];
+}>;
+
+
+export type LogPerformanceMutation = (
+  { __typename?: "Mutation" }
+  & {
+    logPerformance: (
+      { __typename?: "Performance" }
+      & Pick<Performance, "id" | "areaId" | "rating" | "day">
+    ),
+  }
 );
 
 export type LoginUserMutationVariables = Exact<{
@@ -156,6 +229,51 @@ export type RegisterMutation = (
   }
 );
 
+export type UpdateUserAreaMutationVariables = Exact<{
+  id: Scalars["Float"];
+  name?: Maybe<Scalars["String"]>;
+  isActive?: Maybe<Scalars["Boolean"]>;
+}>;
+
+
+export type UpdateUserAreaMutation = (
+  { __typename?: "Mutation" }
+  & {
+    updateUserArea?: Maybe<(
+      { __typename?: "UserArea" }
+      & Pick<UserArea, "id" | "name" | "isActive">
+    )>,
+  }
+);
+
+export type AreaQueryVariables = Exact<{
+  id: Scalars["Float"];
+}>;
+
+
+export type AreaQuery = (
+  { __typename?: "Query" }
+  & {
+    area?: Maybe<(
+      { __typename?: "UserArea" }
+      & Pick<UserArea, "id" | "name" | "isActive">
+    )>,
+  }
+);
+
+export type AreasQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AreasQuery = (
+  { __typename?: "Query" }
+  & {
+    areas: (
+      { __typename?: "UserArea" }
+      & Pick<UserArea, "id" | "name" | "isActive">
+    )[],
+  }
+);
+
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -169,12 +287,79 @@ export type MeQuery = (
   }
 );
 
+export type PerformanceQueryVariables = Exact<{
+  areaId: Scalars["Float"];
+  day?: Maybe<Scalars["String"]>;
+}>;
+
+
+export type PerformanceQuery = (
+  { __typename?: "Query" }
+  & {
+    performance?: Maybe<(
+      { __typename?: "Performance" }
+      & Pick<Performance, "id" | "day" | "areaId" | "rating">
+    )>,
+  }
+);
+
+export type PerformancesQueryVariables = Exact<{
+  day?: Maybe<Scalars["String"]>;
+}>;
+
+
+export type PerformancesQuery = (
+  { __typename?: "Query" }
+  & {
+    performances?: Maybe<(
+      { __typename?: "Performance" }
+      & Pick<Performance, "id" | "day" | "areaId" | "rating">
+    )[]>,
+  }
+);
+
 export const BaseUserFragmentDoc = gql`
     fragment BaseUser on User {
   id
   username
 }
     `;
+export const CreateUserAreaDocument = gql`
+    mutation CreateUserArea($name: String!) {
+  createUserArea(name: $name) {
+    id
+    name
+    isActive
+  }
+}
+    `;
+
+export function useCreateUserAreaMutation() {
+  return Urql.useMutation<CreateUserAreaMutation, CreateUserAreaMutationVariables>(CreateUserAreaDocument);
+}
+export const DeleteUserAreaDocument = gql`
+    mutation DeleteUserArea($id: Float!) {
+  deleteUserArea(id: $id)
+}
+    `;
+
+export function useDeleteUserAreaMutation() {
+  return Urql.useMutation<DeleteUserAreaMutation, DeleteUserAreaMutationVariables>(DeleteUserAreaDocument);
+}
+export const LogPerformanceDocument = gql`
+    mutation LogPerformance($areaId: Float!, $rating: Float!) {
+  logPerformance(areaId: $areaId, rating: $rating) {
+    id
+    areaId
+    rating
+    day
+  }
+}
+    `;
+
+export function useLogPerformanceMutation() {
+  return Urql.useMutation<LogPerformanceMutation, LogPerformanceMutationVariables>(LogPerformanceDocument);
+}
 export const LoginUserDocument = gql`
     mutation LoginUser($username: String!, $password: String!) {
   login(credentials: {username: $username, password: $password}) {
@@ -218,6 +403,45 @@ export const RegisterDocument = gql`
 export function useRegisterMutation() {
   return Urql.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument);
 }
+export const UpdateUserAreaDocument = gql`
+    mutation updateUserArea($id: Float!, $name: String, $isActive: Boolean) {
+  updateUserArea(id: $id, name: $name, isActive: $isActive) {
+    id
+    name
+    isActive
+  }
+}
+    `;
+
+export function useUpdateUserAreaMutation() {
+  return Urql.useMutation<UpdateUserAreaMutation, UpdateUserAreaMutationVariables>(UpdateUserAreaDocument);
+}
+export const AreaDocument = gql`
+    query Area($id: Float!) {
+  area(id: $id) {
+    id
+    name
+    isActive
+  }
+}
+    `;
+
+export function useAreaQuery(options: Omit<Urql.UseQueryArgs<AreaQueryVariables>, "query"> = {}) {
+  return Urql.useQuery<AreaQuery>({ query: AreaDocument, ...options });
+}
+export const AreasDocument = gql`
+    query Areas {
+  areas {
+    id
+    name
+    isActive
+  }
+}
+    `;
+
+export function useAreasQuery(options: Omit<Urql.UseQueryArgs<AreasQueryVariables>, "query"> = {}) {
+  return Urql.useQuery<AreasQuery>({ query: AreasDocument, ...options });
+}
 export const MeDocument = gql`
     query Me {
   me {
@@ -228,4 +452,32 @@ export const MeDocument = gql`
 
 export function useMeQuery(options: Omit<Urql.UseQueryArgs<MeQueryVariables>, "query"> = {}) {
   return Urql.useQuery<MeQuery>({ query: MeDocument, ...options });
+}
+export const PerformanceDocument = gql`
+    query Performance($areaId: Float!, $day: String) {
+  performance(areaId: $areaId, day: $day) {
+    id
+    day
+    areaId
+    rating
+  }
+}
+    `;
+
+export function usePerformanceQuery(options: Omit<Urql.UseQueryArgs<PerformanceQueryVariables>, "query"> = {}) {
+  return Urql.useQuery<PerformanceQuery>({ query: PerformanceDocument, ...options });
+}
+export const PerformancesDocument = gql`
+    query Performances($day: String) {
+  performances(day: $day) {
+    id
+    day
+    areaId
+    rating
+  }
+}
+    `;
+
+export function usePerformancesQuery(options: Omit<Urql.UseQueryArgs<PerformancesQueryVariables>, "query"> = {}) {
+  return Urql.useQuery<PerformancesQuery>({ query: PerformancesDocument, ...options });
 }

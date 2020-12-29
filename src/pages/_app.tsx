@@ -1,4 +1,4 @@
-import { ChakraProvider, ColorModeProvider } from "@chakra-ui/react";
+import { ChakraProvider, ColorModeProvider, Container } from "@chakra-ui/react";
 import { Provider as UrqlProvider, createClient } from "urql";
 import NavBar from "../components/NavBar";
 
@@ -22,7 +22,9 @@ function MyApp({ Component, pageProps }: any) {
           }}
         >
           <NavBar />
-          <Component {...pageProps} />
+          <Container>
+            <Component {...pageProps} />
+          </Container>
         </ColorModeProvider>
       </ChakraProvider>
     </UrqlProvider>

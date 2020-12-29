@@ -1,0 +1,7 @@
+query Area($id: Float!) {
+  area(id: $id) {
+    id
+    name
+    isActive
+  }
+}
